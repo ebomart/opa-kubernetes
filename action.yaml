@@ -1,0 +1,23 @@
+name: "Conftest Kubernetes"
+description: "Open Policy Agent- Kubernetes file check"
+author: "Sunil Jacob"
+branding:
+  icon: "check"
+  color: "green"
+inputs: 
+  file:
+    description: "Files for Conftest to test"
+    required: true
+  output:
+    description: "Output format for results"
+    default: "stdout"
+runs:
+  using: 'composite'
+  steps:
+    - run: cat $k8s_file > ${{ github.action_path }}/k8s_deployment_service.yaml
+      env:
+        k8s_file: ${{ inputs.file }}
+
+    - name: OPA Scan
+      run: docker run --rm -v ${{ github.action_path }}:/project openpolicyagent/conftest test k8s_deployment_service.yaml
+      shell: bash
