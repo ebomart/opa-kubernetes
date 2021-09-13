@@ -17,7 +17,7 @@ runs:
     - run: cat $k8s_file > ${{ github.action_path }}/k8s_deployment_service.yaml
       env:
         k8s_file: ${{ inputs.file }}
-
+      shell: bash
     - name: OPA Scan
       run: docker run --rm -v ${{ github.action_path }}:/project openpolicyagent/conftest test k8s_deployment_service.yaml
       shell: bash
