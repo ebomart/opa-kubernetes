@@ -1,23 +1,31 @@
-name: "Conftest Kubernetes"
-description: "Open Policy Agent- Kubernetes file check"
-author: "Sunil Jacob"
+name: "Helm Conftest"
+description: "Write tests against your Helm Charts using Open Policy Agent"
+author: "Gareth Rushgrove"
 branding:
   icon: "check"
   color: "green"
 inputs: 
-  file:
-    description: "Files for Conftest to test"
+  chart:
+    description: "The directory containing the Chart configuration"
     required: true
+  policy:
+    description: "Where to find the policy folder or file"
+    default: "policy"
+  namespace:
+    description: "The Rego namespace to use for testing"
+    default: "main"
   output:
     description: "Output format for results"
     default: "stdout"
 runs:
-  using: 'composite'
-  steps:
-    - run: cat $k8s_file > ${{ github.action_path }}/k8s_deployment_service.yaml
-      env:
-        k8s_file: ${{ inputs.file }}
-      shell: bash
-    - name: OPA Scan
-      run: docker run --rm -v ${{ github.action_path }}:/project openpolicyagent/conftest test k8s_deployment_service.yaml
-      shell: bash
+  using: 'docker'
+  image: 'docker://instrumenta/helm-conftest:latest'
+  args:
+  - conftest
+  - -o
+  - ${{ inputs.output }}
+  - -p
+  - ${{ github.action_path }}/policy
+  - --namespace
+  - ${{ inputs.namespace }}
+  - ${{ inputs.chart }} 
