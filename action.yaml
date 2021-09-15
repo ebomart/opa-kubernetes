@@ -10,7 +10,7 @@ inputs:
     required: true
   policy:
     description: "Where to find the policy folder or file"
-    default: ${{ github.action_path }}
+    default: "policy"
   namespace:
     description: "The Rego namespace to use for testing"
     default: "main"
