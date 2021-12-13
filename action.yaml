@@ -8,9 +8,9 @@ inputs:
   chart:
     description: "The directory containing the Chart configuration"
     required: true
-  policy:
-    description: "Where to find the policy folder or file"
-    default: '${{ github.action_path }}'
+  # policy:
+  #   description: "Where to find the policy folder or file"
+  #   default: '${{ github.action_path }}'
   namespace:
     description: "The Rego namespace to use for testing"
     default: "main"
@@ -20,12 +20,14 @@ inputs:
 runs:
   using: 'docker'
   image: 'docker://instrumenta/helm-conftest:latest'
+  env:
+    GITHUB_ACTION_PATH: '${{ github.action_path }}'
   args:
   - conftest
   - -o
   - ${{ inputs.output }}
   - -p
-  - ${{ inputs.policy }}
+  - $GITHUB_ACTION_PATH/policy
   - --namespace
   - ${{ inputs.namespace }}
   - ${{ inputs.chart }} 
