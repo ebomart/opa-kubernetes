@@ -27,7 +27,7 @@ runs:
   - -o
   - ${{ inputs.output }}
   - -p
-  - ACTIONS_PATH/policy
+  - $ACTIONS_PATH/policy
   - --namespace
   - ${{ inputs.namespace }}
   - ${{ inputs.chart }} 
