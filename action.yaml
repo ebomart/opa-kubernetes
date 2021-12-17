@@ -8,24 +8,13 @@ inputs:
   chart:
     description: "The directory containing the Chart configuration"
     required: true
-  policy:
-    description: "Where to find the policy folder or file"
-    default: "policy"
-  namespace:
-    description: "The Rego namespace to use for testing"
-    default: "main"
   output:
     description: "Output format for results"
     default: "stdout"
 runs:
-  using: 'docker'
-  image: 'docker://instrumenta/helm-conftest:latest'
-  args:
-  - conftest
-  - -o
-  - ${{ inputs.output }}
-  - -p
-  - ${{ inputs.policy }}
-  - --namespace
-  - ${{ inputs.namespace }}
-  - ${{ inputs.chart }} 
+  using: 'composite'
+  steps:
+    - run: ls -al
+      shell: bash
+    - run: docker run --rm -v ${{ github.action_path }}:/project instrumenta/conftest-action/helm@master ${{ inputs.chart }}
+      shell: bash
