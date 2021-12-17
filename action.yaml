@@ -14,7 +14,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: ls -al
+    - run: ls -al ${{ github.action_path }}
       shell: bash
     - run: docker run --rm -v ${{ github.action_path }}:/project instrumenta/conftest-action/helm@master ${{ inputs.chart }}
       shell: bash
