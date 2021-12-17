@@ -16,5 +16,5 @@ runs:
   steps:
     - run: ls -al ${{ github.action_path }}
       shell: bash
-    - run: docker run --rm -v ${{ github.action_path }}:/project instrumenta/conftest-action/helm@master ${{ inputs.chart }}
+    - run: docker run --rm -v ${{ github.action_path }}:/project instrumenta/conftest-action/helm ${{ inputs.chart }}
       shell: bash
