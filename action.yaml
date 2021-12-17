@@ -19,5 +19,6 @@ runs:
     - run: cat $deployment_file > ${{ github.action_path }}/deployment.yaml
       env:
         deployment_file: ${{ inputs.file }}
+      shell: bash
     - run: docker run --rm -v ${{ github.action_path }}:/project openpolicyagent/conftest test deployment.yaml
       shell: bash
