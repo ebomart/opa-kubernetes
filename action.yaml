@@ -5,7 +5,7 @@ branding:
   icon: "check"
   color: "green"
 inputs: 
-  chart:
+  file:
     description: "The directory containing the Chart configuration"
     required: true
   output:
@@ -16,5 +16,5 @@ runs:
   steps:
     - run: ls -al ${{ github.action_path }}
       shell: bash
-    - run: docker run --rm -v ${{ github.action_path }}:/project instrumenta/conftest-action/helm ${{ inputs.chart }}
+    - run: docker run --rm -v ${{ github.action_path }}:/project openpolicyagent/conftest test ${{ inputs.file }}
       shell: bash
